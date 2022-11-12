@@ -1,25 +1,33 @@
 import React from 'react'
 
 
-export default function Leagues ({leagues}){
+export default function Leagues ({leagues, handleChange, formState}){
+    
+
     leagues.sort(function(a, b){
         if(a.name < b.name) { return -1; }
         if(a.name > b.firstname) { return 1; }
         return 0;
     })
 
-    console.log(leagues)
+    
     let leaguesMapped = leagues.map(league=>
         (
-            <li>
-                {league.name}
-            </li>
+            <option key={league.id} value={league.id}>{league.name}</option>
         )
     )
 
-    return (
-        <ul>{leaguesMapped}</ul>
-    )
+    return leagues.length > 1 ? 
+    <select 
+        name="league"
+        className="select"
+        onChange={handleChange} 
+        value={formState.league.name}
+        // id={formState.id}
+    >
+        {leaguesMapped}	
+    </select>
+     : <div></div>
 
     
 }
