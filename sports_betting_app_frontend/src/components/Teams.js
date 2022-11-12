@@ -17,12 +17,12 @@ export default function Teams ({teams, handleChange, formState}){
         )
     )
 
-    return teams.length > 1 ? 
+    return teams.length > 0 ? 
     <select 
         name="league"
         className="select"
         onChange={handleChange} 
-        value={formState.team.name}
+        value={formState.team}
     >
         {teamsMapped}	
     </select>

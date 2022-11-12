@@ -21,15 +21,16 @@
 .form{
   display: flex;
   flex-direction: column;
-  width: 500px;
 }
 
 .select{
   height: 30px;
   border-radius: 0%;
+  margin-bottom: 10px;
 }
 
 
 .button{
   /* width: 100px; */
+  margin-top: 10px;
 }
