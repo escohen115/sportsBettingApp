@@ -2,9 +2,7 @@ import React from 'react'
 
 
 export default function Teams ({teams, handleChange, formState}){
-
-    console.log(teams)
-    if (teams){
+    if (teams.length>0){
         teams.sort(function(a, b){
             if(a.name < b.name) { return -1; }
             if(a.name > b.name) { return 1; }
@@ -20,7 +18,7 @@ export default function Teams ({teams, handleChange, formState}){
     
         return (
         <select 
-            name="league"
+            name="team"
             className="select"
             onChange={handleChange} 
             value={formState.team}
@@ -29,7 +27,16 @@ export default function Teams ({teams, handleChange, formState}){
         </select>
         )
     }else{
-        return <div></div>
+        return (
+            <select 
+            name="league"
+            className="select"
+            onChange={handleChange} 
+            value={formState.team}
+        >
+            	<option>Unavailable</option>
+        </select>
+        )
     }
     
    

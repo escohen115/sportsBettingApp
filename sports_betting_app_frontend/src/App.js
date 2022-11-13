@@ -10,54 +10,85 @@ const footballCountries = require("./data/footballCountries.json");
 const basketballCountries = require("./data/basketballCountries.json");
 const footballLeagues = require("./data/footballLeagues.json");
 
-
 function App() {
-
   const [formState, setFormState] = useState({
     sport: "basketball",
-    league: 12,
-	  country: "USA",
-    team: null,
+    country: "USA",
+    team: "Atlanta Hawks",
+    date: new Date(),
   });
-  const [date, setDate] = useState(new Date());
-  const [sportsCountries, setSportsCountries] = useState(basketballCountries)
-  const [leagueID, setleagueID] = useState(12)
-  const [teams, setTeams] = useState([])
+
+  
+  // const [sport, setSport] = useState(null);
+  const [sportsCountries, setSportsCountries] = useState(basketballCountries);
+  const [teams, setTeams] = useState([]);
+  const [leagues, setLeagues] = useState(basketballLeagues);
+  const [league, setLeague] = useState(null);
 
   useEffect(() => {
+    if (league) {
+      const options = {
+        method: "GET",
+        headers: {
+          "X-RapidAPI-Key":
+            "2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034",
+          "X-RapidAPI-Host": "api-basketball.p.rapidapi.com",
+        },
+      };
 
+      fetch(
+        `https://api-basketball.p.rapidapi.com/teams?league=${league}&season=2022-2023`,
+        options
+      )
+        .then((response) => response.json())
+        .then((response) => setTeams(response.response))
+        .catch((err) => console.error(err));
+    }
+  }, [league]);
+
+  useEffect(() => {
     console.log(formState)
-
-    const options = {
-      method: 'GET',
-      headers: {
-        'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
-        'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
-      }
-    };   
-
-    fetch(`https://api-basketball.p.rapidapi.com/teams?league=${formState.league}&season=2022-2023`, options)
-      .then(response => response.json())
-      .then(response => setTeams(response.response))
-      .catch(err => console.error(err));
-
-    
-    if(formState.sport === "basketball"){
-      setSportsCountries(basketballCountries)
-    }else if(formState.sport === "football"){
-      setSportsCountries(footballCountries)
+    if (formState.sport === "basketball") {
+      setSportsCountries(basketballCountries);
+    } else if (formState.sport === "football") {
+      setSportsCountries(footballCountries);
     }
   }, [formState]);
 
   function handleChange(e) {
+    console.log(e.target.value)
     setFormState({
       ...formState,
       [e.target.name]: e.target.value,
     });
   }
 
+  function handleCountryChange(e) {
+    //when a country is switched, set the league to the first league id of that country
+    setLeague(basketballLeagues.find(league=>league.country.name === e.target.value).id)
+  
+
+    setTeams([]);
+    setFormState({
+      ...formState,
+      team: "",
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  function handleLeagueChange(e) {
+    setLeague(e.target.value);
+    // setFormState({
+    //   ...formState,
+    //   [e.target.name]: e.target.value,
+    // });
+  }
+
   function dateChange(e) {
-    setDate(e);
+    setFormState({
+      ...formState,
+      date: e,
+    });
   }
 
   function handleSubmit(e) {
@@ -71,7 +102,7 @@ function App() {
       </div>
       <div className="main">
         <form className="form" onSubmit={handleSubmit}>
-          <label>sport</label>
+          <label>Sport</label>
           <select
             className="select"
             onChange={handleChange}
@@ -85,30 +116,27 @@ function App() {
               Football
             </option>
           </select>
-          <label>country/ location</label>
+          <label>Region</label>
           <Countries
             countries={sportsCountries}
-            handleChange={handleChange}
+            handleCountryChange={handleCountryChange}
             formState={formState}
           />
-          <label>league</label>
+          <label>League</label>
           <Leagues
-            leagues={
-              formState.sport === "basketball"
-                ? basketballLeagues
-                : footballLeagues
-            }
-            handleChange={handleChange}
             formState={formState}
+            leagues={leagues}
+            handleLeagueChange={handleLeagueChange}
+            league={league}
           />
-          <label>team</label>
+          <label>Team</label>
           <Teams
             teams={teams}
             handleChange={handleChange}
             formState={formState}
           />
-          <label>select date</label>
-          <DatePicker onChange={dateChange} value={date} />
+          <label>Date</label>
+          <DatePicker onChange={dateChange} value={formState.date} />
           <input type="submit" className="button" value="Submit" />
         </form>
       </div>
@@ -148,31 +176,29 @@ export default App;
 // 	.then(response => console.log(response))
 // 	.catch(err => console.error(err));
 
+// console.log(formState);
+// 	const options1 = {
+// 	method: 'GET',
+// 	headers: {
+// 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
+// 		'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+// 	}
+// };
 
+// fetch('https://api-football-v1.p.rapidapi.com/v3/leagues', options1)
+// 	.then(response => response.json())
+// 	.then(response => console.log(29,response.response,response.response.length,JSON.stringify(response.response)))
+// 	.catch(err => console.error(err))
 
-    // console.log(formState);
-    // 	const options1 = {
-    // 	method: 'GET',
-    // 	headers: {
-    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
-    // 		'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-    // 	}
-    // };
+// const options = {
+// 	method: 'GET',
+// 	headers: {
+// 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
+// 		'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
+// 	}
+// };
 
-    // fetch('https://api-football-v1.p.rapidapi.com/v3/leagues', options1)
-    // 	.then(response => response.json())
-    // 	.then(response => console.log(29,response.response,response.response.length,JSON.stringify(response.response)))
-    // 	.catch(err => console.error(err))
-
-    // const options = {
-    // 	method: 'GET',
-    // 	headers: {
-    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
-    // 		'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
-    // 	}
-    // };
-
-    // fetch(`https://api-${formState.sport}.p.rapidapi.com/teams?league=${formState.league}&season=2019-2020`, options)
-    // 	.then(response => response.json())
-    // 	.then(response => console.log(response))
-    // 	.catch(err => console.error(err));
+// fetch(`https://api-${formState.sport}.p.rapidapi.com/teams?league=${formState.league}&season=2019-2020`, options)
+// 	.then(response => response.json())
+// 	.then(response => console.log(response))
+// 	.catch(err => console.error(err));

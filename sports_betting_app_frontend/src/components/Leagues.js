@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Leagues ({leagues, handleChange, formState}){
+export default function Leagues ({leagues, handleLeagueChange, league, formState}){
     
     let leaguesFiltered = leagues.filter(l=>l.country.name===formState.country)
     
@@ -13,8 +13,8 @@ export default function Leagues ({leagues, handleChange, formState}){
         <select 
         name="league"
         className="select"
-        onChange={handleChange} 
-        value={formState.league}
+        onChange={handleLeagueChange} 
+        value={league}
         // id={formState.id}
         >
             {leaguesMapped}	

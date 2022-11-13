@@ -1,6 +1,8 @@
 import React from 'react'
 
-export default function Countries ({countries, handleChange, formState}){
+export default function Countries ({countries, handleCountryChange, formState}){
+
+    
     
     let countriesMapped = countries.map(country=>
         (
@@ -8,11 +10,11 @@ export default function Countries ({countries, handleChange, formState}){
         )
     )
     
-    return countries.length > 1 ? 
+    return countries.length > 0 ? 
     <select 
         name="country"
         className="select"
-        onChange={handleChange} 
+        onChange={handleCountryChange} 
         value={formState.country}
     >
         {countriesMapped}	
