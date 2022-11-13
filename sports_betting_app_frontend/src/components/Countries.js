@@ -2,11 +2,9 @@ import React from 'react'
 
 export default function Countries ({countries, handleChange, formState}){
     
-    console.log(countries)
-    
     let countriesMapped = countries.map(country=>
         (
-            <option key={country.id} value={country.id}>{country.name}</option>
+            <option key={country.id} value={country.name}>{country.name}</option>
         )
     )
     
@@ -15,7 +13,7 @@ export default function Countries ({countries, handleChange, formState}){
         name="country"
         className="select"
         onChange={handleChange} 
-        value={formState.name}
+        value={formState.country}
     >
         {countriesMapped}	
     </select>

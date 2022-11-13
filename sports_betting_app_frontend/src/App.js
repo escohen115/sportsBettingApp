@@ -6,44 +6,29 @@ import Teams from "./components/Teams";
 import Countries from "./components/Countries";
 
 const basketballLeagues = require("./data/basketballLeagues.json");
+const footballCountries = require("./data/footballCountries.json");
 const basketballCountries = require("./data/basketballCountries.json");
 const footballLeagues = require("./data/footballLeagues.json");
+
 
 function App() {
   const [formState, setFormState] = useState({
     sport: "basketball",
-    league: basketballLeagues,
+    league: "NBA",
+	  country: "USA",
     team: null,
   });
   const [date, setDate] = useState(new Date());
+  const [sportsCountries, setSportsCountries] = useState(basketballLeagues)
+  // const [sportsCountriesLeagues, setSportsCountriesLeagues] = useState("USA")
 
   useEffect(() => {
-    console.log(formState);
-    // 	const options1 = {
-    // 	method: 'GET',
-    // 	headers: {
-    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
-    // 		'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
-    // 	}
-    // };
-
-    // fetch('https://api-football-v1.p.rapidapi.com/v3/leagues', options1)
-    // 	.then(response => response.json())
-    // 	.then(response => console.log(29,response.response,response.response.length,JSON.stringify(response.response)))
-    // 	.catch(err => console.error(err))
-
-    // const options = {
-    // 	method: 'GET',
-    // 	headers: {
-    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
-    // 		'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
-    // 	}
-    // };
-
-    // fetch(`https://api-${formState.sport}.p.rapidapi.com/teams?league=${formState.league}&season=2019-2020`, options)
-    // 	.then(response => response.json())
-    // 	.then(response => console.log(response))
-    // 	.catch(err => console.error(err));
+    console.log(formState.country)
+    if(formState.sport === "basketball"){
+      setSportsCountries(basketballCountries)
+    }else if(formState.sport === "football"){
+      setSportsCountries(footballCountries)
+    }
   }, [formState]);
 
   function handleChange(e) {
@@ -68,7 +53,7 @@ function App() {
       </div>
       <div className="main">
         <form className="form" onSubmit={handleSubmit}>
-          <label>SPORT </label>
+          <label>sport</label>
           <select
             className="select"
             onChange={handleChange}
@@ -82,9 +67,9 @@ function App() {
               Football
             </option>
           </select>
-          <label>country </label>
+          <label>country/ location</label>
           <Countries
-            countries={basketballCountries}
+            countries={sportsCountries}
             handleChange={handleChange}
             formState={formState}
           />
@@ -145,4 +130,31 @@ export default App;
 // 	.then(response => console.log(response))
 // 	.catch(err => console.error(err));
 
-//euroleague
+
+
+    // console.log(formState);
+    // 	const options1 = {
+    // 	method: 'GET',
+    // 	headers: {
+    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
+    // 		'X-RapidAPI-Host': 'api-football-v1.p.rapidapi.com'
+    // 	}
+    // };
+
+    // fetch('https://api-football-v1.p.rapidapi.com/v3/leagues', options1)
+    // 	.then(response => response.json())
+    // 	.then(response => console.log(29,response.response,response.response.length,JSON.stringify(response.response)))
+    // 	.catch(err => console.error(err))
+
+    // const options = {
+    // 	method: 'GET',
+    // 	headers: {
+    // 		'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
+    // 		'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
+    // 	}
+    // };
+
+    // fetch(`https://api-${formState.sport}.p.rapidapi.com/teams?league=${formState.league}&season=2019-2020`, options)
+    // 	.then(response => response.json())
+    // 	.then(response => console.log(response))
+    // 	.catch(err => console.error(err));
