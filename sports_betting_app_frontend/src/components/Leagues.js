@@ -9,7 +9,6 @@ export default function Leagues ({leagues, handleChange, formState}){
             <option key={league.id} value={league.id}>{league.name}</option>
         )
     )
-
     return (
         <select 
         name="league"

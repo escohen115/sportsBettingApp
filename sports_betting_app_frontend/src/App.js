@@ -12,18 +12,36 @@ const footballLeagues = require("./data/footballLeagues.json");
 
 
 function App() {
+
   const [formState, setFormState] = useState({
     sport: "basketball",
-    league: "NBA",
+    league: 12,
 	  country: "USA",
     team: null,
   });
   const [date, setDate] = useState(new Date());
-  const [sportsCountries, setSportsCountries] = useState(basketballLeagues)
-  // const [sportsCountriesLeagues, setSportsCountriesLeagues] = useState("USA")
+  const [sportsCountries, setSportsCountries] = useState(basketballCountries)
+  const [leagueID, setleagueID] = useState(12)
+  const [teams, setTeams] = useState([])
 
   useEffect(() => {
-    console.log(formState.country)
+
+    console.log(formState)
+
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': '2dd546e72dmsh540546b64658ae0p141ce0jsnbfa9db400034',
+        'X-RapidAPI-Host': 'api-basketball.p.rapidapi.com'
+      }
+    };   
+
+    fetch(`https://api-basketball.p.rapidapi.com/teams?league=${formState.league}&season=2022-2023`, options)
+      .then(response => response.json())
+      .then(response => setTeams(response.response))
+      .catch(err => console.error(err));
+
+    
     if(formState.sport === "basketball"){
       setSportsCountries(basketballCountries)
     }else if(formState.sport === "football"){
@@ -85,7 +103,7 @@ function App() {
           />
           <label>team</label>
           <Teams
-            teams={[{ id: 1, name: "buckaneers" }]}
+            teams={teams}
             handleChange={handleChange}
             formState={formState}
           />
